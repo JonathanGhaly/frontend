@@ -1,0 +1,181 @@
+.container {
+  width: 100%;
+  overflow-x: auto;
+
+  background: white;
+  border-radius: 12px;
+
+  box-shadow: 0 5px 15px rgba(0,0,0,.05);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+.table thead {
+  background: #f8fafc;
+}
+
+.table th {
+  text-align: left;
+  padding: 1rem;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  color: #6b7280;
+
+  border-bottom: 2px solid #e5e7eb;
+
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 1rem;
+
+  border-bottom: 1px solid #f1f5f9;
+
+  color: #374151;
+
+  vertical-align: middle;
+}
+
+.table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.striped tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.compact th,
+.compact td {
+  padding: 0.65rem 0.8rem;
+}
+
+.bordered th,
+.bordered td {
+  border: 1px solid #e5e7eb;
+}
+
+.responsive {
+  overflow-x: auto;
+}
+
+.empty {
+  padding: 3rem;
+
+  text-align: center;
+
+  color: #9ca3af;
+}
+
+.loading {
+  padding: 3rem;
+
+  text-align: center;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.35rem 0.75rem;
+
+  border-radius: 999px;
+
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.info {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 0.5rem;
+
+  padding: 1rem;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+.pagination button {
+  padding: 0.5rem 0.9rem;
+
+  border: 1px solid #d1d5db;
+  background: white;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  transition: all .2s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+.pagination button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+
+  .table {
+    min-width: 600px;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.85rem;
+  }
+
+}
