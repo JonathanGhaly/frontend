@@ -1,0 +1,17 @@
+.card {
+  width: min(100%, 560px);
+  margin: 0 auto;
+  padding: 2rem;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(16px);
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 1.25rem;
+    border-radius: 18px;
+  }
+}

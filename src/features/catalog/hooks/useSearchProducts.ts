@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { searchProducts } from "../api/searchProducts";
-import { ProductSearchRequest } from "../types";
+import type { ProductSearchRequest } from "../types";
 
 export const useSearchProducts = (
     request: ProductSearchRequest

@@ -25,7 +25,7 @@ const ProtectedRoute = ({
     if (
         roles &&
         roles.length > 0 &&
-        !user?.roles.some((role) =>
+        !user?.roles?.some((role) =>
             roles.includes(role)
         )
     ) {

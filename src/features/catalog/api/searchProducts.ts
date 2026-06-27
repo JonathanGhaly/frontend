@@ -1,20 +1,8 @@
-import api from "../../../config/axios";
-
-import {
+import type {
     ProductSearchRequest,
-    ProductSearchResponse,
 } from "../types";
+import { getProducts } from "./getProducts";
 
 export const searchProducts = async (
     request: ProductSearchRequest
-) => {
-    const response =
-        await api.get<ProductSearchResponse>(
-            "/products/search",
-            {
-                params: request,
-            }
-        );
-
-    return response.data;
-};
+) => getProducts(request);

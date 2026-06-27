@@ -4,24 +4,33 @@ import type { InputProps } from "./Input.types";
 export default function Input({
     label,
     error,
+    className,
+    id,
     ...props
-}:InputProps){
+}: InputProps) {
+    const inputId = id ?? label?.toLowerCase().replace(/\s+/g, "-");
 
-    return(
-
+    return (
         <div className={styles.container}>
-
-            {label && <label>{label}</label>}
+            {label && (
+                <label className={styles.label} htmlFor={inputId}>
+                    {label}
+                </label>
+            )}
 
             <input
                 {...props}
-                className={styles.input}
+                id={inputId}
+                className={`${styles.input} ${error ? styles.error : ""} ${className ?? ""}`.trim()}
+                aria-invalid={Boolean(error)}
+                aria-describedby={error ? `${inputId}-error` : undefined}
             />
 
-            {error && <span>{error}</span>}
-
+            {error && (
+                <span id={`${inputId}-error`} className={styles.errorText}>
+                    {error}
+                </span>
+            )}
         </div>
-
     );
-
 }

@@ -6,14 +6,15 @@ export default function Button({
     loading,
     fullWidth,
     variant = "primary",
+    type = "button",
     ...props
 }: ButtonProps) {
     return (
         <button
             {...props}
-            className={`${styles.button}
-            ${styles[variant]}
-            ${fullWidth ? styles.full : ""}`}
+            type={type}
+            className={`${styles.button} ${styles[variant]} ${fullWidth ? styles.full : ""}`.trim()}
+            aria-busy={loading}
         >
             {loading ? "Loading..." : children}
         </button>

@@ -1,11 +1,13 @@
 import api from "../../../config/axios";
-import { Product } from "../types";
+import type { Product } from "../types";
 
 export const getProduct = async (
-    id: string
+    slugOrId: string
 ) => {
     const response =
-        await api.get<Product>(`/products/${id}`);
+        await api.get<Product>(
+            `/api/v1/Products/${slugOrId}`
+        );
 
     return response.data;
 };

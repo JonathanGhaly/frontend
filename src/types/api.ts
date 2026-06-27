@@ -22,9 +22,25 @@ export interface LoginResponse {
     accessToken: string;
     refreshToken: string;
     expiresAt: string;
+    user: UserDto;
 }
 
 export interface RefreshTokenRequest {
     accessToken: string;
     refreshToken: string;
+}
+
+export interface UserDto {
+    id: string;
+    fullName: string | null;
+    email: string | null;
+    roles: string[] | null;
+}
+
+export interface ProblemDetails {
+    type?: string | null;
+    title?: string | null;
+    status?: number | null;
+    detail?: string | null;
+    instance?: string | null;
 }

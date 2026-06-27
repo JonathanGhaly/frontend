@@ -1,25 +1,32 @@
 export interface Category {
     id: string;
-    name: string;
-    slug: string;
+    name: string | null;
+    slug?: string | null;
+    description?: string | null;
+    parentId?: string | null;
+    sortOrder?: number;
 }
 
 export interface Product {
     id: string;
-    name: string;
-    slug: string;
+    name: string | null;
+    slug?: string | null;
 
-    description: string;
+    description: string | null;
 
     price: number;
 
-    imageUrl: string;
+    imageUrl?: string | null;
 
-    stock: number;
+    stock?: number;
 
-    categoryId: string;
+    stockQuantity?: number;
 
-    createdAt: string;
+    categoryId?: string;
+
+    categoryIds?: string[];
+
+    createdAt?: string;
 }
 
 export interface ProductSearchRequest {
@@ -27,9 +34,11 @@ export interface ProductSearchRequest {
 
     categoryId?: string;
 
-    page: number;
+    page?: number;
 
-    pageSize: number;
+    limit?: number;
+
+    sort?: string;
 }
 
 export interface ProductSearchResponse {
@@ -40,4 +49,6 @@ export interface ProductSearchResponse {
     pageSize: number;
 
     totalCount: number;
+
+    totalPages?: number;
 }

@@ -1,5 +1,7 @@
 import ProductPrice from "./ProductPrice";
-import { Product } from "../types";
+import type { Product } from "../types";
+import Button from "../../../components/Button/Button";
+import { useCartStore } from "../../../store/cartStore";
 
 interface Props {
     product: Product;
@@ -8,23 +10,40 @@ interface Props {
 const ProductDetails = ({
     product,
 }: Props) => {
+    const addItem = useCartStore((state) => state.addItem);
+    const imageUrl = product.imageUrl ?? "/favicon.svg";
+    const productName = product.name ?? "Untitled product";
+    const stock = product.stockQuantity ?? product.stock ?? 0;
+    const description = product.description ?? "No description available.";
+    const price = Number(product.price ?? 0);
+
     return (
-        <>
-            <img
-                src={product.imageUrl}
-                alt={product.name}
-            />
+        <div>
+            <img src={imageUrl} alt={productName} />
 
-            <h1>{product.name}</h1>
+            <h1>{productName}</h1>
 
-            <p>{product.description}</p>
+            <p>{description}</p>
 
-            <ProductPrice
-                price={product.price}
-            />
+            <ProductPrice price={price} />
 
-            <p>Stock: {product.stock}</p>
-        </>
+            <p>Stock: {stock}</p>
+
+            <Button
+                type="button"
+                onClick={() =>
+                    addItem({
+                        productId: product.id,
+                        name: productName,
+                        image: imageUrl,
+                        price: Number.isFinite(price) ? price : 0,
+                        quantity: 1,
+                    })
+                }
+            >
+                Add to cart
+            </Button>
+        </div>
     );
 };
 

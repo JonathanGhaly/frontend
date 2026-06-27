@@ -1,13 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { formatPrice } from "../utils/formatPrice";
 
-import { searchProducts } from "../api/searchProducts";
-import { ProductSearchRequest } from "../types";
+interface Props {
+    price: number | string | null | undefined;
+}
 
-export const useSearchProducts = (
-    request: ProductSearchRequest
-) =>
-    useQuery({
-        queryKey: ["products", request],
+const ProductPrice = ({ price }: Props) => {
+    return <strong>{formatPrice(price)}</strong>;
+};
 
-        queryFn: () => searchProducts(request),
-    });
+export default ProductPrice;
