@@ -29,7 +29,45 @@ The application is structured as a decoupled Single Page Application (SPA):
 
 ---
 
-## 3. Quick Start & Installation
+## 3. Frontend Directory & Feature Architecture
+
+The React frontend utilizes a modular, **feature-based directory structure** combined with centralized service and state management layers. This architecture groups related UI elements, logic, hooks, and views into dedicated domain features, ensuring high maintainability and scalability.
+
+```mermaid
+graph TD
+    App[src/App.tsx] --> Router[src/router]
+    Router --> Features[src/features]
+    Features --> Admin[admin]
+    Features --> Auth[auth]
+    Features --> Catalog[catalog]
+    Features --> Checkout[checkout]
+    Features -.-> State[src/store]
+    Features -.-> Services[src/services]
+```
+
+### Architectural Breakdown
+
+#### A. Feature Modules ([src/features](file:///f:/Assissment/frontend/src/features))
+Each domain feature module contains its own folder with assets, components, hooks, views, or helper utilities unique to that feature:
+*   **`admin`:** Components and custom hooks (like [useAdminOrders.ts](file:///f:/Assissment/frontend/src/features/admin/hooks/useAdminOrders.ts), [useAdminCategories.ts](file:///f:/Assissment/frontend/src/features/admin/hooks/useAdminCategories.ts)) for product stock, categories, and global order fulfillment dashboard pipelines.
+*   **`auth`:** Pages and forms for authentication management (Login, Register).
+*   **`catalog`:** Storefront interfaces including dynamic category browsing, search, and the interactive spec sheet customization builder.
+*   **`checkout`:** Shipping details form inputs, order overview reviews, and payment/idempotency-key dispatch orchestrations.
+
+#### B. Centralized Shared Assets & Components ([src/components](file:///f:/Assissment/frontend/src/components))
+*   Contains core reusable UI primitives (e.g. Buttons, Inputs, Dialog Modals, and high-fidelity overlays) that are used across multiple features.
+
+#### C. Global Client State Store ([src/store](file:///f:/Assissment/frontend/src/store))
+*   Uses **Zustand** to manage lightweight client-side application states decoupled from the view hierarchy.
+*   Includes [authStore.ts](file:///f:/Assissment/frontend/src/store/authStore.ts) (managing JWT credentials and validation states) and [cartStore.ts](file:///f:/Assissment/frontend/src/store/cartStore.ts) (managing customer cart items and quantities, automatically serialized to LocalStorage).
+
+#### D. Server State & Data Synchronizer ([src/services](file:///f:/Assissment/frontend/src/services) & TanStack Query)
+*   Uses a centralized Axios client instance ([api.ts](file:///f:/Assissment/frontend/src/services/api.ts)) equipped with request and response interceptors to automatically attach authorization tokens and capture/route global errors.
+*   Uses custom react-query hooks to synchronize and cache external API queries and orchestrate mutations with automated invalidation triggers.
+
+---
+
+## 4. Quick Start & Installation
 
 ### Prerequisites
 - Node.js (v20 or higher recommended)
@@ -62,7 +100,7 @@ The application is structured as a decoupled Single Page Application (SPA):
 
 ---
 
-## 4. Docker Deployment & Production Nginx Hosting
+## 5. Docker Deployment & Production Nginx Hosting
 
 The frontend contains a production-ready **multi-stage Dockerfile** designed to optimize load-times and security.
 
@@ -81,7 +119,7 @@ The production stage utilizes `nginx.conf` to enforce:
 
 ---
 
-## 5. Front-End System Design & Trade-offs
+## 6. Front-End System Design & Trade-offs
 
 ### A. Tailwind CSS v4 with Native Vite Integration
 *   **Decision:** Upgraded to Tailwind CSS v4 and the native `@tailwindcss/vite` compiler.
@@ -101,7 +139,7 @@ The production stage utilizes `nginx.conf` to enforce:
 
 ---
 
-## 6. Catalog Filtering & Search Implementation
+## 7. Catalog Filtering & Search Implementation
 
 The product catalog uses a hybrid approach to query, filter, and sort products to optimize catalog responsiveness:
 
