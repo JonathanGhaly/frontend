@@ -7,93 +7,106 @@ import {
     OrderStatus,
     orderStatusLabels,
 } from "../types";
-import styles from "../../../components/Layout/Layout.module.css";
+import { ArrowLeft, Edit } from "lucide-react";
 
-const statuses = Object.values(OrderStatus).filter(
-    (status): status is OrderStatus =>
-        typeof status === "number"
-);
-
-const AdminOrdersPage = () => {
+export default function AdminOrdersPage() {
     const { data: orders = [], isLoading } = useAdminOrders();
     const updateStatus = useUpdateOrderStatus();
 
+    const statuses = Object.values(OrderStatus);
+
     return (
-        <div>
-            <h1 className={styles.pageTitle}>Orders</h1>
+        <div className="max-w-6xl mx-auto px-4 py-8 animate-fade-in space-y-6">
+            <div className="flex items-center space-x-3">
+                <Link to="/admin" className="p-2 bg-white border border-slate-200 rounded-xl text-slate-500 hover:text-indigo-650 transition-colors">
+                    <ArrowLeft className="w-4 h-4" />
+                </Link>
+                <div>
+                    <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight font-display">
+                        Orders Management
+                    </h1>
+                    <p className="text-[10px] font-bold text-slate-450 uppercase tracking-widest font-mono">
+                        Admin Orders Console
+                    </p>
+                </div>
+            </div>
 
-            {isLoading && <p>Loading orders...</p>}
+            {isLoading ? (
+                <div className="flex justify-center py-12">
+                    <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+                </div>
+            ) : orders.length === 0 ? (
+                <div className="bg-white border border-slate-200 rounded-[2rem] p-10 text-center max-w-md mx-auto">
+                    <p className="text-slate-500 font-bold text-xs uppercase tracking-wider">No orders found.</p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 gap-6">
+                    {orders.map((order) => (
+                        <article
+                            key={order.id}
+                            className="bg-white border border-slate-200 rounded-[2rem] p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6"
+                        >
+                            <div className="space-y-1">
+                                <h3 className="font-extrabold text-slate-900 font-display text-base">
+                                    Order #{order.orderId || order.id.slice(0, 8)}
+                                </h3>
+                                <p className="text-[10px] font-bold text-slate-400 font-mono uppercase tracking-widest">
+                                    Placed: {order.placedAt ? new Date(order.placedAt).toLocaleDateString() : "Unknown date"}
+                                </p>
+                                <p className="text-xs text-slate-500 leading-relaxed max-w-md mt-2">
+                                    Shipping to: {order.shippingAddress?.city}, {order.shippingAddress?.country}
+                                </p>
+                            </div>
 
-            <section className={styles.section}>
-                {orders.length === 0 ? (
-                    <p>No orders found.</p>
-                ) : (
-                    <div className={styles.gridCards}>
-                        {orders.map((order) => (
-                            <article className={styles.card} key={order.id}>
-                                <div className={styles.cardHeader}>
-                                    <div>
-                                        <h2 className={styles.cardTitle}>
-                                            {order.orderId ?? order.id}
-                                        </h2>
-                                        <p className={styles.cardMeta}>
-                                            {order.createdAt
-                                                ? new Date(order.createdAt).toLocaleDateString()
-                                                : "Date unavailable"}
-                                        </p>
-                                    </div>
+                            <div className="flex flex-wrap items-center gap-6">
+                                <div>
+                                    <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Order Total</p>
+                                    <p className="font-mono font-bold text-slate-900 text-sm mt-0.5">
+                                        ${(order.total ?? 0).toFixed(2)}
+                                    </p>
+                                </div>
 
-                                    <Link
-                                        to={`/admin/orders/${order.id}`}
-                                        className={styles.heroButtonSecondary}
+                                <div>
+                                    <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Status</p>
+                                    <p className="font-bold text-indigo-700 text-xs mt-0.5">
+                                        {orderStatusLabels[order.status] || order.status}
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1" htmlFor={`status-${order.id}`}>
+                                        Change Status
+                                    </label>
+                                    <select
+                                        id={`status-${order.id}`}
+                                        value={order.status}
+                                        onChange={(event) =>
+                                            updateStatus.mutate({
+                                                id: order.id,
+                                                status: event.target.value as OrderStatus,
+                                            })
+                                        }
+                                        className="bg-slate-50 border border-slate-205 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 font-bold focus:outline-none focus:ring-1 focus:ring-indigo-500 cursor-pointer"
                                     >
-                                        View details
-                                    </Link>
+                                        {statuses.map((status) => (
+                                            <option key={status} value={status}>
+                                                {orderStatusLabels[status] || status}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
 
-                                <div className={styles.orderSummaryRow}>
-                                    <div>
-                                        <p className={styles.cardFieldLabel}>Order total</p>
-                                        <p className={styles.cardFieldValue}>
-                                            ${(order.total ?? 0).toFixed(2)}
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <p className={styles.cardFieldLabel}>Current status</p>
-                                        <p className={styles.cardFieldValue}>
-                                            {orderStatusLabels[order.status ?? OrderStatus.Pending]}
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <label className={styles.cardFieldLabel} htmlFor={`status-${order.id}`}>
-                                            Change status
-                                        </label>
-                                        <select
-                                            id={`status-${order.id}`}
-                                            value={order.status ?? OrderStatus.Pending}
-                                            onChange={(event) =>
-                                                updateStatus.mutate({
-                                                    id: order.id,
-                                                    status: Number(event.target.value) as OrderStatus,
-                                                })
-                                            }
-                                            className={styles.selectInput}
-                                        >
-                                            {statuses.map((status) => (
-                                                <option key={status} value={status}>
-                                                    {orderStatusLabels[status]}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                </div>
-                            </article>
-                        ))}
-                    </div>
-                )}
-            </section>
+                                <Link
+                                    to={`/admin/orders/${order.id}`}
+                                    className="bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold py-2.5 px-4 rounded-xl text-xs uppercase tracking-wider transition-all"
+                                >
+                                    Details
+                                </Link>
+                            </div>
+                        </article>
+                    ))}
+                </div>
+            )}
         </div>
     );
-};
-
-export default AdminOrdersPage;
+}

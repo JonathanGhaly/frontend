@@ -5,13 +5,22 @@ import type {
     OrderResponse,
 } from "../types";
 
-export const createOrder = async (
-    request: CreateOrderRequest
-) => {
+export const createOrder = async ({
+    request,
+    idempotencyKey,
+}: {
+    request: CreateOrderRequest;
+    idempotencyKey: string;
+}) => {
     const response =
         await api.post<OrderResponse>(
             "/api/v1/Orders",
-            request
+            request,
+            {
+                headers: {
+                    "X-Idempotency-Key": idempotencyKey,
+                },
+            }
         );
 
     return response.data;

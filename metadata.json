@@ -1,0 +1,6 @@
+{
+  "name": "E-Commerce Storefront",
+  "description": "A responsive, high-fidelity e-commerce storefront designed with a modern Bento Grid theme, featuring React, Tailwind CSS, and an interactive developer bridge for local or cloud .NET Core API backends.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

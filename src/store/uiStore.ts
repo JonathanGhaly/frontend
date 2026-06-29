@@ -4,6 +4,7 @@ interface UiState {
     loading: boolean;
     sidebarOpen: boolean;
     theme: "light" | "dark";
+    searchQuery: string;
 
     setLoading: (loading: boolean) => void;
 
@@ -16,6 +17,8 @@ interface UiState {
     setTheme: (
         theme: "light" | "dark"
     ) => void;
+
+    setSearchQuery: (query: string) => void;
 }
 
 export const useUiStore = create<UiState>((set) => ({
@@ -24,6 +27,8 @@ export const useUiStore = create<UiState>((set) => ({
     sidebarOpen: false,
 
     theme: "light",
+
+    searchQuery: "",
 
     setLoading: (loading) =>
         set({
@@ -48,5 +53,10 @@ export const useUiStore = create<UiState>((set) => ({
     setTheme: (theme) =>
         set({
             theme,
+        }),
+
+    setSearchQuery: (query) =>
+        set({
+            searchQuery: query,
         }),
 }));

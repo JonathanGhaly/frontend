@@ -29,6 +29,7 @@ export const getProducts = async (
                     limit: request.limit ?? 20,
                     sort: request.sort,
                     categoryId: request.categoryId,
+                    search: request.search,
                 },
             }
         );
